@@ -1,0 +1,76 @@
+{
+  "listingType": "rent",
+  "districts": {
+    "_comment": "Excluded: D17-D18 (Changi, Pasir Ris, Tampines), D22-D24 (Jurong, Boon Lay, Tuas, CCK, Bukit Panjang, Tengah), D25 (Woodlands, Admiralty), D27 (Yishun, Sembawang). Ang Mo Kio is excluded by name since it shares D20 with Bishan/Thomson.",
+    "include": [
+      "D01",
+      "D02",
+      "D03",
+      "D04",
+      "D05",
+      "D06",
+      "D07",
+      "D08",
+      "D09",
+      "D10",
+      "D11",
+      "D12",
+      "D13",
+      "D14",
+      "D15",
+      "D16",
+      "D19",
+      "D20",
+      "D21",
+      "D26",
+      "D28"
+    ]
+  },
+  "searches": [
+    {
+      "id": "1bed",
+      "label": "1 Bedroom",
+      "queries": [
+        {
+          "bedrooms": "1",
+          "maxPrice": "1600"
+        },
+        {
+          "isRoomRental": "true",
+          "roomType": "master",
+          "maxPrice": "1600"
+        }
+      ],
+      "exclude": [
+        "Ang Mo Kio",
+        "Yishun",
+        "Woodlands",
+        "Admiralty"
+      ]
+    },
+    {
+      "id": "2bed",
+      "label": "2 Bedroom",
+      "queries": [
+        {
+          "bedrooms": "2",
+          "maxPrice": "3200"
+        }
+      ],
+      "exclude": [
+        "Ang Mo Kio",
+        "Yishun",
+        "Woodlands",
+        "Admiralty"
+      ]
+    }
+  ],
+  "maxPages": 40,
+  "stopAfterKnownPages": 2,
+  "pageDelayMs": [
+    1500,
+    3500
+  ],
+  "challengeWaitSec": 180,
+  "staleAfterHours": 72
+}

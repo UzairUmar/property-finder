@@ -1,0 +1,10 @@
+{
+  "disabledMcpjsonServers": [
+    "gitlab"
+  ],
+  "permissions": {
+    "allow": [
+      "Bash(git init *)"
+    ]
+  }
+}
