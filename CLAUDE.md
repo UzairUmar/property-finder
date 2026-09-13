@@ -10,6 +10,8 @@ Scheduled scraper for PropertyGuru Singapore rentals (1-bed and 2-bed searches),
 
 ```bash
 npm run typecheck                    # tsc --noEmit; no test suite exists
+npm run lint                         # biome check (lint + format + import order)
+npm run lint:fix                     # apply Biome's safe fixes
 npm run scrape -- --max-pages 2 --no-ai   # fastest end-to-end check (opens a Chrome window)
 npm run scrape -- --full             # ignore early-stop, crawl maxPages per search
 npm run scrape -- --search 1bed      # one search only
@@ -42,6 +44,10 @@ PropertyGuru is behind Cloudflare managed challenge. Empirically (2026-09):
 
 Consequence: a visible Chrome window opens on every run. This is expected, not a bug.
 
+## Coding standards
+
+Biome enforces formatting and lint (`biome.json`: 2-space, 120 cols, double quotes, semicolons, trailing commas, sorted imports, no non-null assertions). A `PostToolUse` hook in `.claude/settings.json` runs `scripts/check-file.sh` after every Write/Edit: Biome on the touched `.ts`/`.json` file, then `tsc` for `.ts`. Findings come back as a blocking error — fix them before moving on rather than working around the hook.
+
 ## Testing changes
 
-There are no unit tests. Verify with `npm run typecheck` then a real short run (`--max-pages 2 --no-ai`). For dashboard changes, `npm run report` regenerates `results/dashboard.html` from existing data; the Chrome extension cannot open `file://` URLs, so serve `results/` with `python3 -m http.server` to inspect it, and note that hidden tabs never trigger lazy image loading.
+There are no unit tests. Verify with `npm run lint`, `npm run typecheck`, then a real short run (`--max-pages 2 --no-ai`). For dashboard changes, `npm run report` regenerates `results/dashboard.html` from existing data; the Chrome extension cannot open `file://` URLs, so serve `results/` with `python3 -m http.server` to inspect it, and note that hidden tabs never trigger lazy image loading.

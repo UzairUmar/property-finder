@@ -1,12 +1,12 @@
 import { parseArgs } from "node:util";
+import { analyzeListings, hasApiKey } from "../ai/analyze.js";
 import { loadConfig, loadPreferences } from "../config.js";
+import { type DashboardSection, writeDashboard } from "../dashboard.js";
+import { notifyMac } from "../notify.js";
+import { writeResults } from "../report.js";
 import { launch } from "../scraper/browser.js";
 import { scrapeQuery } from "../scraper/propertyguru.js";
 import { Store } from "../store/db.js";
-import { analyzeListings, hasApiKey } from "../ai/analyze.js";
-import { writeResults } from "../report.js";
-import { notifyMac } from "../notify.js";
-import { writeDashboard, type DashboardSection } from "../dashboard.js";
 
 const { values: args } = parseArgs({
   options: {
@@ -47,7 +47,9 @@ try {
       ? new RegExp(search.exclude.map((e) => e.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"), "i")
       : null;
 
-    log(`[${search.id}] start — ${known.size} known listings, ${search.queries.length} queries, maxPages=${maxPages}${args.full ? " (full crawl)" : ""}`);
+    log(
+      `[${search.id}] start — ${known.size} known listings, ${search.queries.length} queries, maxPages=${maxPages}${args.full ? " (full crawl)" : ""}`,
+    );
     try {
       for (const [qi, params] of search.queries.entries()) {
         const tag = search.queries.length > 1 ? `[${search.id} q${qi + 1}]` : `[${search.id}]`;
@@ -62,7 +64,7 @@ try {
           pages++;
           let newOnPage = 0;
           for (const l of result.listings) {
-            if (excludeRe && excludeRe.test(`${l.title} ${l.address} ${l.area}`)) {
+            if (excludeRe?.test(`${l.title} ${l.address} ${l.area}`)) {
               excluded++;
               continue;
             }
@@ -87,7 +89,9 @@ try {
       store.finishRun(runId, { pages, seen, newCount: newIds.size, status: "error", error: String(err) });
       log(`[${search.id}] scrape failed after ${pages} pages: ${err}`);
     }
-    log(`[${search.id}] scraped ${seen} listings — ${newIds.size} new, ${priceChanges} price changes, ${excluded} excluded by area`);
+    log(
+      `[${search.id}] scraped ${seen} listings — ${newIds.size} new, ${priceChanges} price changes, ${excluded} excluded by area`,
+    );
 
     if (useAi) {
       const pending = store.needingAnalysis(search.id, prefs.hash, config.staleAfterHours);

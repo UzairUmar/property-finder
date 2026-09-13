@@ -1,7 +1,7 @@
 import type { BrowserContext, Page } from "patchright";
+import { notifyMac } from "../notify.js";
 import type { Listing, ListingType, QueryParams } from "../types.js";
 import { normalize } from "./parse.js";
-import { notifyMac } from "../notify.js";
 
 const BASE = "https://www.propertyguru.com.sg";
 
@@ -11,7 +11,7 @@ export function searchUrl(type: ListingType, params: QueryParams, page: number):
   for (const [k, v] of Object.entries(params)) for (const item of Array.isArray(v) ? v : [v]) qs.append(k, item);
   qs.set("sort", "date");
   qs.set("order", "desc");
-  return `${BASE}/${folder}${page > 1 ? "/" + page : ""}?${qs}`;
+  return `${BASE}/${folder}${page > 1 ? `/${page}` : ""}?${qs}`;
 }
 
 export interface PageResult {
@@ -36,11 +36,19 @@ async function isChallenge(page: Page): Promise<boolean> {
 }
 
 async function needsHuman(page: Page): Promise<boolean> {
-  const body = await page.locator("body").innerText({ timeout: 2000 }).catch(() => "");
+  const body = await page
+    .locator("body")
+    .innerText({ timeout: 2000 })
+    .catch(() => "");
   return /verify you are human/i.test(body);
 }
 
-async function loadPage(page: Page, url: string, challengeWaitMs: number, log: (m: string) => void): Promise<Record<string, any>> {
+async function loadPage(
+  page: Page,
+  url: string,
+  challengeWaitMs: number,
+  log: (m: string) => void,
+): Promise<Record<string, any>> {
   await page.goto(url, { waitUntil: "domcontentloaded", timeout: 60_000 });
   let json = await nextDataJson(page);
   if (!json && (await isChallenge(page))) {
@@ -52,7 +60,9 @@ async function loadPage(page: Page, url: string, challengeWaitMs: number, log: (
       if (json) break;
       if (!notified && (await needsHuman(page))) {
         notified = true;
-        log(`Cloudflare needs a human — click "Verify you are human" in the Chrome window (waiting up to ${Math.round(challengeWaitMs / 1000)}s)`);
+        log(
+          `Cloudflare needs a human — click "Verify you are human" in the Chrome window (waiting up to ${Math.round(challengeWaitMs / 1000)}s)`,
+        );
         notifyMac("Property Finder", "PropertyGuru needs a human check. Click the checkbox in the Chrome window.");
         await page.bringToFront().catch(() => {});
       }

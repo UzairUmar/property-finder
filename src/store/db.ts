@@ -1,6 +1,6 @@
-import { DatabaseSync } from "node:sqlite";
 import fs from "node:fs";
 import path from "node:path";
+import { DatabaseSync } from "node:sqlite";
 import { DATA_DIR } from "../config.js";
 import type { Analysis, Listing, StoredListing } from "../types.js";
 
@@ -96,7 +96,9 @@ export class Store {
 
   finishRun(id: number, patch: { pages: number; seen: number; newCount: number; status: string; error?: string }) {
     this.db
-      .prepare("UPDATE runs SET finished_at = ?, pages = ?, seen = ?, new_count = ?, status = ?, error = ? WHERE id = ?")
+      .prepare(
+        "UPDATE runs SET finished_at = ?, pages = ?, seen = ?, new_count = ?, status = ?, error = ? WHERE id = ?",
+      )
       .run(new Date().toISOString(), patch.pages, patch.seen, patch.newCount, patch.status, patch.error ?? null, id);
   }
 
@@ -138,8 +140,9 @@ export class Store {
       .all(searchId) as { listing_id: number; price: number; seen_at: string }[];
     const byId = new Map<number, { price: number; seenAt: string }[]>();
     for (const h of history) {
-      if (!byId.has(h.listing_id)) byId.set(h.listing_id, []);
-      byId.get(h.listing_id)!.push({ price: h.price, seenAt: h.seen_at });
+      const entries = byId.get(h.listing_id) ?? [];
+      entries.push({ price: h.price, seenAt: h.seen_at });
+      byId.set(h.listing_id, entries);
     }
     return rows.map((r) => {
       const l = JSON.parse(r.data) as Listing;

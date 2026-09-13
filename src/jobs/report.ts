@@ -1,7 +1,7 @@
 import { loadConfig, loadPreferences } from "../config.js";
-import { Store } from "../store/db.js";
+import { type DashboardSection, writeDashboard } from "../dashboard.js";
 import { writeResults } from "../report.js";
-import { writeDashboard, type DashboardSection } from "../dashboard.js";
+import { Store } from "../store/db.js";
 
 const config = loadConfig();
 const prefs = loadPreferences();

@@ -63,7 +63,10 @@ export function writeDashboard(sections: DashboardSection[]) {
   const generatedAt = new Date().toISOString();
   const payload = JSON.stringify({ generatedAt, sections }).replace(/<\//g, "<\\/");
   const tabs = sections
-    .map((s, i) => `<button class="tab${i === 0 ? " on" : ""}" data-id="${s.search.id}">${s.search.label} (${s.listings.length})</button>`)
+    .map(
+      (s, i) =>
+        `<button class="tab${i === 0 ? " on" : ""}" data-id="${s.search.id}">${s.search.label} (${s.listings.length})</button>`,
+    )
     .join("");
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">

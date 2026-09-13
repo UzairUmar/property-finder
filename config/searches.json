@@ -41,12 +41,7 @@
           "maxPrice": "1600"
         }
       ],
-      "exclude": [
-        "Ang Mo Kio",
-        "Yishun",
-        "Woodlands",
-        "Admiralty"
-      ]
+      "exclude": ["Ang Mo Kio", "Yishun", "Woodlands", "Admiralty"]
     },
     {
       "id": "2bed",
@@ -57,20 +52,12 @@
           "maxPrice": "3200"
         }
       ],
-      "exclude": [
-        "Ang Mo Kio",
-        "Yishun",
-        "Woodlands",
-        "Admiralty"
-      ]
+      "exclude": ["Ang Mo Kio", "Yishun", "Woodlands", "Admiralty"]
     }
   ],
   "maxPages": 40,
   "stopAfterKnownPages": 2,
-  "pageDelayMs": [
-    1500,
-    3500
-  ],
+  "pageDelayMs": [1500, 3500],
   "challengeWaitSec": 180,
   "staleAfterHours": 72
 }

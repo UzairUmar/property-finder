@@ -9,7 +9,7 @@ function num(s: unknown): number | null {
 }
 
 function flatten(x: unknown, acc: Raw[] = []): Raw[] {
-  if (Array.isArray(x)) x.forEach((v) => flatten(v, acc));
+  if (Array.isArray(x)) for (const v of x) flatten(v, acc);
   else if (x && typeof x === "object") acc.push(x as Raw);
   return acc;
 }
@@ -17,7 +17,7 @@ function flatten(x: unknown, acc: Raw[] = []): Raw[] {
 function parseListedAt(text: string): string | null {
   const m = text.match(/Listed on ([A-Za-z]{3} \d{1,2}, \d{4})/);
   if (!m) return null;
-  const d = new Date(m[1] + " 00:00:00 GMT+0800");
+  const d = new Date(`${m[1]} 00:00:00 GMT+0800`);
   return Number.isNaN(d.getTime()) ? null : d.toISOString();
 }
 

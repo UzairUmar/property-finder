@@ -82,6 +82,7 @@ Plain English. Budget, districts, MRT lines, furnishing, move-in date, deal-brea
 | `npm run schedule:run-now` | Trigger a run immediately |
 | `npm run schedule:uninstall` | Remove the job |
 | `npm run typecheck` | `tsc` |
+| `npm run lint` / `lint:fix` | Biome lint + format check / auto-fix |
 
 Scheduled runs log to `logs/launchd.log`.
 

@@ -9,7 +9,9 @@
     "schedule:install": "scripts/schedule.sh install",
     "schedule:uninstall": "scripts/schedule.sh uninstall",
     "schedule:status": "scripts/schedule.sh status",
-    "schedule:run-now": "scripts/schedule.sh run-now"
+    "schedule:run-now": "scripts/schedule.sh run-now",
+    "lint": "biome check src config",
+    "lint:fix": "biome check --write src config"
   },
   "keywords": [],
   "author": "",
@@ -21,12 +23,14 @@
     "zod": "^4.6.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.13",
     "@types/node": "^22.20.2",
     "tsx": "^4.23.13",
     "typescript": "^7.0.2"
   },
   "allowScripts": {
     "esbuild@0.28.2": true,
-    "fsevents@2.3.3": true
+    "fsevents@2.3.3": true,
+    "@biomejs/biome@2.5.13": true
   }
 }

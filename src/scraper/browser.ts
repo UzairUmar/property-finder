@@ -1,6 +1,6 @@
-import { chromium, type BrowserContext } from "patchright";
-import path from "node:path";
 import os from "node:os";
+import path from "node:path";
+import { type BrowserContext, chromium } from "patchright";
 
 export const PROFILE_DIR = path.join(os.homedir(), ".property-finder", "chrome-profile");
 

@@ -31,7 +31,11 @@ export function writeResults(search: SearchConfig, listings: StoredListing[], ne
 
   fs.writeFileSync(
     path.join(RESULTS_DIR, `${search.id}.json`),
-    JSON.stringify({ search, generatedAt: now, count: sorted.length, newThisRun: [...newIds], listings: sorted }, null, 2),
+    JSON.stringify(
+      { search, generatedAt: now, count: sorted.length, newThisRun: [...newIds], listings: sorted },
+      null,
+      2,
+    ),
   );
 
   const fresh = sorted.filter((l) => newIds.has(l.id));
@@ -47,7 +51,7 @@ export function writeResults(search: SearchConfig, listings: StoredListing[], ne
   }
   if (strong.length) {
     parts.push(`## Strong matches (${strong.length})`, ``, HEADER, ...strong.map(row), ``);
-    parts.push(`### Why`, ``, ...strong.map((l) => `- **${l.title}** (${l.priceText}): ${l.analysis!.reason}`), ``);
+    parts.push(`### Why`, ``, ...strong.map((l) => `- **${l.title}** (${l.priceText}): ${l.analysis?.reason}`), ``);
   }
   parts.push(`## All active listings (${sorted.length})`, ``, HEADER, ...sorted.map(row), ``);
   fs.writeFileSync(path.join(RESULTS_DIR, `${search.id}.md`), parts.join("\n"));
