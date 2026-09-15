@@ -2,6 +2,10 @@
 
 Scrapes PropertyGuru Singapore every 12 hours for 1-bedroom units and master rooms (≤ S$1,600) and 2-bedroom units (≤ S$3,200) in selected districts, stores everything in a local SQLite database, scores each listing with Claude against your written preferences, and writes ranked results you can browse in a dashboard.
 
+## Why
+
+I built this while searching for a room to rent in Singapore. Refreshing PropertyGuru by hand and re-reading the same listings got old fast, so this does the checking for me every 12 hours and ranks what's new against what I actually care about. It's a personal tool, tuned to my own search, but the filters and preferences are all in `config/` if you want to point it at yours.
+
 ## How it works
 
 1. **Scrape** — Opens real Chrome (via [patchright](https://github.com/Kaliiiiiiiiii-Vinyzu/patchright)) and reads each search page's embedded `__NEXT_DATA__` JSON. Newest listings first; stops early once two consecutive pages contain nothing new.
